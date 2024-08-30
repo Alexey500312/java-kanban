@@ -1,24 +1,19 @@
-package ru.yandex.model;
+package ru.yandex.javacource.e.schedule.model;
 
 import java.util.Objects;
 
-public abstract class BaseTask {
+public class Task {
     private Integer id;
     private String name;
     private String description;
     private TaskStatus status;
 
-    private BaseTask() {
-        id = Integer.valueOf(SequenceTask.generateId());
-    }
-
-    public BaseTask(String name, String description) {
-        this();
+    public Task(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
-    protected BaseTask(String name, String description, TaskStatus status) {
+    public Task(String name, String description, TaskStatus status) {
         this(name, description);
         this.status = status;
     }
@@ -39,6 +34,10 @@ public abstract class BaseTask {
         return status;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -47,31 +46,31 @@ public abstract class BaseTask {
         this.description = description;
     }
 
-    protected void setStatus(TaskStatus status) {
+    public void setStatus(TaskStatus status) {
         this.status = status;
     }
 
     @Override
-    public final String toString() {
+    public String toString() {
         return this.getClass().getSimpleName()
                 + "{"
-                + "id=" + id + ", "
-                + "name='" + name + '\'' + ", "
-                + "description='" + description + '\'' + ", "
-                + "status='" + status.getStatusText() + '\''
+                + "id=" + this.getId() + ", "
+                + "name='" + this.getName() + '\'' + ", "
+                + "description='" + this.getDescription() + '\'' + ", "
+                + "status='" + this.getStatus().getStatusText() + '\''
                 + "}";
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public final boolean equals(Object obj) {
         if (this == obj) return true;
         if (this == null || this.getClass() != obj.getClass()) return false;
-        BaseTask baseTask = (BaseTask) obj;
+        Task baseTask = (Task) obj;
         return this.id.equals(baseTask.id);
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return Objects.hashCode(id);
     }
 }

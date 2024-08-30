@@ -1,4 +1,4 @@
-package ru.yandex.model;
+package ru.yandex.javacource.e.schedule.model;
 
 public enum TaskStatus {
     NEW("To do"),

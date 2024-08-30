@@ -1,8 +1,10 @@
-import ru.yandex.model.Epic;
-import ru.yandex.model.SubTask;
-import ru.yandex.model.Task;
-import ru.yandex.model.TaskStatus;
-import ru.yandex.service.TaskManager;
+package ru.yandex.javacource.e.schedule;
+
+import ru.yandex.javacource.e.schedule.model.Epic;
+import ru.yandex.javacource.e.schedule.model.SubTask;
+import ru.yandex.javacource.e.schedule.model.Task;
+import ru.yandex.javacource.e.schedule.model.TaskStatus;
+import ru.yandex.javacource.e.schedule.service.TaskManager;
 
 public class Main {
 
@@ -19,14 +21,14 @@ public class Main {
         Epic epic = new Epic("Поход за покупками", "Купить все необходимое по списку");
         manager.createEpic(epic);
         SubTask subTask = new SubTask("Составить список", "Составить список покупок", TaskStatus.NEW, epic);
-        manager.createSubTask(subTask);
+        manager.addNewSubTask(subTask);
         subTask = new SubTask("Сходить в магазин", "Сходить в магазин за покупками", TaskStatus.NEW, epic);
-        manager.createSubTask(subTask);
+        manager.addNewSubTask(subTask);
 
         epic = new Epic("Собрать мебель", "Собрать мебель");
         manager.createEpic(epic);
         subTask = new SubTask("Прочитать инструкцию", "Прочитать инструкцию по сборке", TaskStatus.NEW, epic);
-        manager.createSubTask(subTask);
+        manager.addNewSubTask(subTask);
 
         System.out.println(manager.getAllTasks());
         System.out.println(manager.getAllEpics());
