@@ -1,7 +1,7 @@
 package ru.yandex.javacource.e.schedule.model;
 
 public class SubTask extends Task {
-    private Epic epic;
+    private Integer epicId;
 
     public SubTask(String name, String description, TaskStatus status) {
         super(name, description, status);
@@ -9,18 +9,18 @@ public class SubTask extends Task {
 
     public SubTask(String name, String description, TaskStatus status, Epic epic) {
         this(name, description, status);
-        this.epic = epic;
+        this.epicId = epic.getId();
     }
 
-    public Epic getEpic() {
-        return epic;
+    public Integer getEpicId() {
+        return epicId;
     }
 
-    public void setEpic(Epic epic) {
-        if (epic == null)
+    public void setEpicId(Integer epicId) {
+        if (epicId == null)
             return;
 
-        this.epic = epic;
+        this.epicId = epicId;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class SubTask extends Task {
                 + "name='" + this.getName() + '\'' + ", "
                 + "description='" + this.getDescription() + '\'' + ", "
                 + "status='" + this.getStatus().getStatusText() + '\'' + ", "
-                + "epicId = " + (this.getEpic() != null ? this.getEpic().getId() : null)
+                + "epicId = " + (this.getEpicId() != null ? this.epicId : null)
                 + "}";
     }
 }

@@ -4,14 +4,14 @@ import ru.yandex.javacource.e.schedule.model.Epic;
 import ru.yandex.javacource.e.schedule.model.SubTask;
 import ru.yandex.javacource.e.schedule.model.Task;
 import ru.yandex.javacource.e.schedule.model.TaskStatus;
-import ru.yandex.javacource.e.schedule.service.TaskManager;
+import ru.yandex.javacource.e.schedule.service.*;
 
 public class Main {
 
     public static void main(String[] args) {
         System.out.println("Поехали!");
 
-        TaskManager manager = new TaskManager();
+        TaskManager manager = Managers.getDefault();
 
         Task task = new Task("Замена лампочки", "Поменять испорченную лампочку в люстре", TaskStatus.NEW);
         manager.createTask(task);
@@ -49,5 +49,7 @@ public class Main {
         System.out.println(manager.getAllTasks());
         System.out.println(manager.getAllEpics());
         System.out.println(manager.getAllSubTasks());
+
+        System.out.println(manager.getHistoryManager().getHistory());
     }
 }

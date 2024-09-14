@@ -3,192 +3,47 @@ package ru.yandex.javacource.e.schedule.service;
 import ru.yandex.javacource.e.schedule.model.Epic;
 import ru.yandex.javacource.e.schedule.model.SubTask;
 import ru.yandex.javacource.e.schedule.model.Task;
-import ru.yandex.javacource.e.schedule.model.TaskStatus;
 
-import java.util.*;
+import java.util.List;
 
-public class TaskManager {
-    private int sequenceTask;
-    private Map<Integer, Task> tasks;
-    private Map<Integer, Epic> epics;
-    private Map<Integer, SubTask> subTasks;
+public interface TaskManager {
+    Task createTask(Task task);
 
-    public TaskManager() {
-        sequenceTask = 0;
-        tasks = new HashMap<>();
-        epics = new HashMap<>();
-        subTasks = new HashMap<>();
-    }
+    List<Task> getAllTasks();
 
-    public Task createTask(Task task) {
-        task.setId(generateId());
-        tasks.put(task.getId(), task);
-        return task;
-    }
+    void removeAllTasks();
 
-    public List<Task> getAllTasks() {
-        return new ArrayList<>(tasks.values());
-    }
+    Task getTask(Integer taskId);
 
-    public void removeAllTasks() {
-        tasks.clear();
-    }
+    void removeTask(Integer taskId);
 
-    public Task getTask(Integer taskId) {
-        return tasks.get(taskId);
-    }
+    Task updateTask(Task task);
 
-    public void removeTask(Integer taskId) {
-        tasks.remove(taskId);
-    }
+    Epic createEpic(Epic epic);
 
-    public Task updateTask(Task task) {
-        if (tasks.get(task.getId()) == null) {
-            return null;
-        }
+    List<Epic> getAllEpics();
 
-        tasks.put(task.getId(), task);
-        return task;
-    }
+    List<Integer> getAllSubTasksInEpic(Epic epic);
 
-    public Epic createEpic(Epic epic) {
-        epic.setId(generateId());
-        epics.put(epic.getId(), epic);
-        return epic;
-    }
+    void removeAllEpics();
 
-    public List<Epic> getAllEpics() {
-        return new ArrayList<>(epics.values());
-    }
+    Epic getEpic(Integer epicId);
 
-    public List<SubTask> getAllSubTasksInEpic(Epic epic) {
-        return epic.getSubTasks();
-    }
+    void removeEpic(Integer epicId);
 
-    public void removeAllEpics() {
-        subTasks.clear();
-        epics.clear();
-    }
+    Epic updateEpic(Epic epic);
 
-    public Epic getEpic(Integer epicId) {
-        return epics.get(epicId);
-    }
+    SubTask addNewSubTask(SubTask subTask);
 
-    public void removeEpic(Integer epicId) {
-        Epic epic = getEpic(epicId);
-        for (SubTask subTask : epic.getSubTasks()) {
-            subTasks.remove(subTask.getId());
-        }
-        epics.remove(epicId);
-    }
+    List<SubTask> getAllSubTasks();
 
-    public Epic updateEpic(Epic epic) {
-        Epic savedEpic = epics.get(epic.getId());
-        if (savedEpic == null) {
-            return null;
-        }
+    void removeAllSubTasks();
 
-        savedEpic.setName(epic.getName());
-        savedEpic.setDescription(epic.getDescription());
-        epics.put(savedEpic.getId(), savedEpic);
-        return savedEpic;
-    }
+    SubTask getSubTask(Integer subTaskId);
 
-    public SubTask addNewSubTask(SubTask subTask) {
-        Epic epic = subTask.getEpic();
-        if (epic == null) {
-            return null;
-        }
+    void removeSubTask(Integer subTaskId);
 
-        subTask.setId(generateId());
-        if (epic.addSubTask(subTask)) {
-            updateEpicStatus(epic);
-            subTasks.put(subTask.getId(), subTask);
-            return subTask;
-        } else {
-            return null;
-        }
-    }
+    SubTask updateSubTask(SubTask subTask);
 
-    public List<SubTask> getAllSubTasks() {
-        return new ArrayList<>(subTasks.values());
-    }
-
-    public void removeAllSubTasks() {
-        for (Epic epic : epics.values()) {
-            epic.removeAllSubTask();
-            updateEpicStatus(epic);
-        }
-        subTasks.clear();
-    }
-
-    public SubTask getSubTask(Integer subTaskId) {
-        return subTasks.get(subTaskId);
-    }
-
-    public void removeSubTask(Integer subTaskId) {
-        SubTask subTask = getSubTask(subTaskId);
-        if (subTask != null) {
-            subTasks.remove(subTask.getId());
-            Epic epic =  subTask.getEpic();
-            epic.removeSubTask(subTask);
-            updateEpicStatus(epic);
-        }
-    }
-
-    public SubTask updateSubTask(SubTask subTask) {
-        SubTask savedSubTask = subTasks.get(subTask.getId());
-        if (savedSubTask == null) {
-            return null;
-        }
-
-        Epic savedSubTaskEpic = savedSubTask.getEpic();
-        if (savedSubTaskEpic == null) {
-            return null;
-        }
-
-        savedSubTask.setName(subTask.getName());
-        savedSubTask.setDescription(subTask.getDescription());
-        savedSubTask.setStatus(subTask.getStatus());
-        updateEpicStatus(savedSubTaskEpic);
-        subTasks.put(savedSubTask.getId(), savedSubTask);
-        return savedSubTask;
-    }
-
-    private int generateId() {
-        return ++sequenceTask;
-    }
-
-    private void updateEpicStatus(Epic epic) {
-        if (epic == null) {
-            return;
-        }
-
-        if (epic.getSubTasks().size() == 0) {
-            epic.setStatus(TaskStatus.NEW);
-            return;
-        }
-
-        int[] countStatus = {0, 0, 0};
-        for (SubTask subTask : epic.getSubTasks()) {
-            switch (subTask.getStatus()) {
-                case NEW:
-                    countStatus[0]++;
-                    break;
-                case IN_PROGRESS:
-                    countStatus[1]++;
-                    break;
-                case DONE:
-                    countStatus[2]++;
-                    break;
-            }
-        }
-        if (countStatus[0] > 0 && countStatus[1] == 0 && countStatus[2] == 0) {
-            epic.setStatus(TaskStatus.NEW);
-        } else if (countStatus[0] == 0 && countStatus[1] == 0 && countStatus[2] > 0) {
-            epic.setStatus(TaskStatus.DONE);
-        } else {
-            epic.setStatus(TaskStatus.IN_PROGRESS);
-        }
-    }
+    HistoryManager getHistoryManager();
 }
