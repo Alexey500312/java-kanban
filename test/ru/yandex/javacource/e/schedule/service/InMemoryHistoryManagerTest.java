@@ -12,13 +12,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Менеджер истории")
 class InMemoryHistoryManagerTest {
+    private final int HISTORY_SIZE = 10;
     private TaskManager taskManager;
     private HistoryManager historyManager;
 
     @BeforeEach
     public void init() {
-        taskManager = Managers.getDefault();
-        historyManager = taskManager.getHistoryManager();
+        historyManager = Managers.getDefaultHistory();
+        taskManager = new InMemoryTaskManager(historyManager);
         Task task = new Task("Задача 1", "Описание задачи 1", TaskStatus.NEW);
         taskManager.createTask(task);
         Epic epic = new Epic("Эпик 1", "Описание эпика 1");
@@ -39,8 +40,10 @@ class InMemoryHistoryManagerTest {
                 historyManager.getHistory().size(),
                 "Количество записей в истории не увеличелось");
 
-        task.setStatus(TaskStatus.IN_PROGRESS);
-        taskManager.updateTask(task);
+
+        Task newTask = new Task(task.getName(), task.getDescription(), TaskStatus.IN_PROGRESS);
+        newTask.setId(task.getId());
+        taskManager.updateTask(newTask);
         taskManager.getTask(1);
         countHistory = historyManager.getHistory().size();
 
@@ -54,7 +57,7 @@ class InMemoryHistoryManagerTest {
         }
 
         assertEquals(
-                historyManager.getHistoryMaxSize(),
+                HISTORY_SIZE,
                 historyManager.getHistory().size(),
                 "Размер истории превышает максимум");
 

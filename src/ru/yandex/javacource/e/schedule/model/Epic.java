@@ -16,6 +16,10 @@ public class Epic extends Task {
         return subTasks;
     }
 
+    public void setSubTasks(List<Integer> subTasks) {
+        this.subTasks = subTasks;
+    }
+
     public boolean addSubTask(SubTask subTask) {
         if (subTasks.contains(subTask.getId()))
             return false;

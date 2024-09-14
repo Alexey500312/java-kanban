@@ -108,15 +108,15 @@ public class InMemoryTaskManager implements TaskManager {
             return null;
         }
 
-        savedEpic.setName(epic.getName());
-        savedEpic.setDescription(epic.getDescription());
-        epics.put(savedEpic.getId(), savedEpic);
-        return savedEpic;
+        epic.setStatus(savedEpic.getStatus());
+        epic.setSubTasks(savedEpic.getSubTasks());
+        epics.put(epic.getId(), epic);
+        return epic;
     }
 
     @Override
     public SubTask addNewSubTask(SubTask subTask) {
-        Epic epic = getEpic(subTask.getEpicId());
+        Epic epic = epics.get(subTask.getEpicId());
         if (epic == null) {
             return null;
         }
@@ -157,7 +157,7 @@ public class InMemoryTaskManager implements TaskManager {
         SubTask subTask = subTasks.get(subTaskId);
         if (subTask != null) {
             subTasks.remove(subTask.getId());
-            Epic epic =  getEpic(subTask.getEpicId());
+            Epic epic =  epics.get(subTask.getEpicId());
             epic.removeSubTask(subTask.getId());
             updateEpicStatus(epic);
         }
@@ -175,17 +175,15 @@ public class InMemoryTaskManager implements TaskManager {
             return null;
         }
 
-        savedSubTask.setName(subTask.getName());
-        savedSubTask.setDescription(subTask.getDescription());
-        savedSubTask.setStatus(subTask.getStatus());
-        updateEpicStatus(getEpic(savedSubTaskEpicId));
-        subTasks.put(savedSubTask.getId(), savedSubTask);
-        return savedSubTask;
+        subTask.setEpicId(savedSubTaskEpicId);
+        updateEpicStatus(epics.get(subTask.getEpicId()));
+        subTasks.put(subTask.getId(), subTask);
+        return subTask;
     }
 
     @Override
-    public HistoryManager getHistoryManager() {
-        return historyManager;
+    public List<Task> getHistory() {
+        return historyManager.getHistory();
     }
 
     private int generateId() {
@@ -204,7 +202,7 @@ public class InMemoryTaskManager implements TaskManager {
 
         int[] countStatus = {0, 0, 0};
         for (Integer subTaskId : epic.getSubTasks()) {
-            switch (getSubTask(subTaskId).getStatus()) {
+            switch (subTasks.get(subTaskId).getStatus()) {
                 case NEW:
                     countStatus[0]++;
                     break;

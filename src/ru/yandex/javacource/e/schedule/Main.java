@@ -50,6 +50,6 @@ public class Main {
         System.out.println(manager.getAllEpics());
         System.out.println(manager.getAllSubTasks());
 
-        System.out.println(manager.getHistoryManager().getHistory());
+        System.out.println(manager.getHistory());
     }
 }

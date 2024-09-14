@@ -8,6 +8,7 @@ import ru.yandex.javacource.e.schedule.model.SubTask;
 import ru.yandex.javacource.e.schedule.model.Task;
 import ru.yandex.javacource.e.schedule.model.TaskStatus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -230,24 +231,26 @@ class InMemoryTaskManagerTest {
     @DisplayName("Обновление эпика")
     public void shouldUpdateEpic() {
         Epic epic = taskManager.getAllEpics().get(0);
-        Epic epicCopy = new Epic(epic.getName(), epic.getDescription());
-        epicCopy.setId(epic.getId());
-        epicCopy.addSubTask(taskManager.getSubTask(epic.getSubTasks().get(0)));
-        epicCopy.setName("Измененное имя");
+        Epic newEpic = new Epic(epic.getName(), epic.getDescription());
+        newEpic.setId(epic.getId());
+        newEpic.addSubTask(taskManager.getSubTask(epic.getSubTasks().get(0)));
+        newEpic.setName("Измененное имя");
 
-        taskManager.updateEpic(epicCopy);
+        taskManager.updateEpic(newEpic);
 
         assertEquals(
-                epicCopy.toString(),
-                taskManager.getEpic(epicCopy.getId()).toString(),
+                newEpic.toString(),
+                taskManager.getEpic(newEpic.getId()).toString(),
                 "После обновления, эпики не изменились");
 
-        epicCopy.removeAllSubTask();
+        Epic newEpicEmptySubTasks = new Epic(newEpic.getName(), newEpic.getDescription());
+        newEpicEmptySubTasks.setId(newEpic.getId());
+        newEpicEmptySubTasks.setStatus(newEpic.getStatus());
 
-        taskManager.updateEpic(epicCopy);
+        taskManager.updateEpic(newEpicEmptySubTasks);
 
-        assertNotEquals(epicCopy.getSubTasks().size(),
-                taskManager.getEpic(epicCopy.getId()).getSubTasks().size(),
+        assertEquals(newEpicEmptySubTasks.getSubTasks().size(),
+                newEpic.getSubTasks().size(),
                 "После обновления изменилось количество подзадач");
     }
 
@@ -255,30 +258,37 @@ class InMemoryTaskManagerTest {
     @DisplayName("Обновление подзадачи")
     public void shouldUpdateSubTask() {
         SubTask subTask = taskManager.getAllSubTasks().get(0);
-        SubTask subTaskCopy = new SubTask(subTask.getName(), subTask.getDescription(), subTask.getStatus());
-        subTaskCopy.setId(subTask.getId());
-        subTaskCopy.setEpicId(subTask.getEpicId());
-        subTaskCopy.setDescription("Измененное описание");
+        SubTask newSubTask = new SubTask(subTask.getName(), subTask.getDescription(), subTask.getStatus());
+        newSubTask.setId(subTask.getId());
+        newSubTask.setEpicId(subTask.getEpicId());
+        newSubTask.setDescription("Измененное описание");
 
         assertNotEquals(
-                subTaskCopy.toString(),
-                taskManager.getSubTask(subTaskCopy.getId()).toString(),
+                newSubTask.toString(),
+                taskManager.getSubTask(newSubTask.getId()).toString(),
                 "После изменения, подзадачи совпадают");
 
-        taskManager.updateSubTask(subTaskCopy);
+        taskManager.updateSubTask(newSubTask);
 
         assertEquals(
-                subTaskCopy.toString(),
-                taskManager.getSubTask(subTaskCopy.getId()).toString(),
+                newSubTask.toString(),
+                taskManager.getSubTask(newSubTask.getId()).toString(),
                 "После обновления, подзадачи отличаются");
 
         Epic epic = new Epic("Эпик 2", "Описание эпика 2");
         taskManager.createEpic(epic);
-        subTaskCopy.setEpicId(epic.getId());
-        taskManager.updateSubTask(subTaskCopy);
+        SubTask newSubTaskChangeEpic = new SubTask(
+                newSubTask.getName(),
+                newSubTask.getDescription(),
+                newSubTask.getStatus(),
+                epic);
+        newSubTaskChangeEpic.setId(newSubTask.getId());
 
-        assertNotEquals(subTaskCopy.getEpicId(),
-                taskManager.getSubTask(subTaskCopy.getId()).getEpicId(),
+        taskManager.updateSubTask(newSubTaskChangeEpic);
+
+        assertEquals(
+                newSubTaskChangeEpic.getEpicId(),
+                newSubTask.getEpicId(),
                 "После обновления изменился эпик");
     }
 
@@ -338,22 +348,18 @@ class InMemoryTaskManagerTest {
     @Test
     @DisplayName("Получение истории")
     public void shouldGetHistory() {
-        assertNotNull(taskManager.getHistoryManager(), "Нет истории");
+        assertNotNull(taskManager.getHistory(), "Нет истории");
     }
 
     private class EmptyHistoryManager implements HistoryManager {
+
         @Override
         public void add(Task task) {
         }
 
         @Override
         public List<Task> getHistory() {
-            return null;
-        }
-
-        @Override
-        public int getHistoryMaxSize() {
-            return 0;
+            return new ArrayList<>();
         }
     }
 }

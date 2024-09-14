@@ -45,5 +45,5 @@ public interface TaskManager {
 
     SubTask updateSubTask(SubTask subTask);
 
-    HistoryManager getHistoryManager();
+    List<Task> getHistory();
 }
