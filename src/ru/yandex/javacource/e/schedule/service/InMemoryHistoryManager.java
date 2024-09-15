@@ -1,18 +1,15 @@
 package ru.yandex.javacource.e.schedule.service;
 
-import ru.yandex.javacource.e.schedule.model.Epic;
-import ru.yandex.javacource.e.schedule.model.SubTask;
 import ru.yandex.javacource.e.schedule.model.Task;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private final int HISTORY_SIZE;
+    private static final int HISTORY_SIZE = 10;
     private final List<Task> history;
 
     public InMemoryHistoryManager() {
-        HISTORY_SIZE = 10;
         history = new ArrayList<>(HISTORY_SIZE);
     }
 
