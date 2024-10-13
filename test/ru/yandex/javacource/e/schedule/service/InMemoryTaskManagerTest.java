@@ -161,7 +161,7 @@ class InMemoryTaskManagerTest {
         assertEquals(1, taskManager.getAllSubTasks().size());
 
         SubTask subTask = taskManager.getAllSubTasks().get(0);
-        Epic epic  = taskManager.getEpic(subTask.getEpicId());
+        Epic epic = taskManager.getEpic(subTask.getEpicId());
         int epicCountSubTask = epic.getSubTasks().size();
         taskManager.removeSubTask(subTask.getId());
         epicCountSubTask--;
