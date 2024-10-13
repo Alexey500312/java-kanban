@@ -161,9 +161,13 @@ class InMemoryTaskManagerTest {
         assertEquals(1, taskManager.getAllSubTasks().size());
 
         SubTask subTask = taskManager.getAllSubTasks().get(0);
+        Epic epic  = taskManager.getEpic(subTask.getEpicId());
+        int epicCountSubTask = epic.getSubTasks().size();
         taskManager.removeSubTask(subTask.getId());
+        epicCountSubTask--;
 
         assertEquals(0, taskManager.getAllSubTasks().size(), "Подзадача не удалена");
+        assertEquals(epicCountSubTask, epic.getSubTasks().size(), "Подзадача не удалена из эпика");
     }
 
     @Test
@@ -355,6 +359,11 @@ class InMemoryTaskManagerTest {
 
         @Override
         public void add(Task task) {
+        }
+
+        @Override
+        public void remove(int id) {
+
         }
 
         @Override

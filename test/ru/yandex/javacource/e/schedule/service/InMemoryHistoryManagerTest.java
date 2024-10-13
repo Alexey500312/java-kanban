@@ -12,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Менеджер истории")
 class InMemoryHistoryManagerTest {
-    private final int HISTORY_SIZE = 10;
     private TaskManager taskManager;
     private HistoryManager historyManager;
 
@@ -40,26 +39,11 @@ class InMemoryHistoryManagerTest {
                 historyManager.getHistory().size(),
                 "Количество записей в истории не увеличелось");
 
-
-        Task newTask = new Task(task.getName(), task.getDescription(), TaskStatus.IN_PROGRESS);
-        newTask.setId(task.getId());
-        taskManager.updateTask(newTask);
-        taskManager.getTask(1);
         countHistory = historyManager.getHistory().size();
-
-        assertNotEquals(
-                historyManager.getHistory().get(countHistory - 2).toString(),
-                historyManager.getHistory().get(countHistory - 1).toString(),
-                "После изменения задачи в истории совпадают");
-
-        for (int i = 0; i < 20; i++) {
-            taskManager.getTask(1);
-        }
-
         assertEquals(
-                HISTORY_SIZE,
-                historyManager.getHistory().size(),
-                "Размер истории превышает максимум");
+                task.toString(),
+                historyManager.getHistory().get(countHistory - 1).toString(),
+                "Задача не соответствует последней записи в истории");
 
         Epic epic = taskManager.getEpic(2);
         countHistory = historyManager.getHistory().size();
@@ -76,6 +60,39 @@ class InMemoryHistoryManagerTest {
                 subTask.toString(),
                 historyManager.getHistory().get(countHistory - 1).toString(),
                 "Подзадача не соответствует последней записи в истории");
+    }
+
+    @Test
+    @DisplayName("Удаление из истории")
+    void shouldLinkHistory() {
+        taskManager.getTask(1);
+        taskManager.getEpic(2);
+        taskManager.getSubTask(3);
+
+        historyManager.remove(3);
+
+        assertEquals(2, historyManager.getHistory().size(), "Запись из истории не удалена");
+    }
+
+    @Test
+    @DisplayName("Повторение задач")
+    void shouldRepeatTasksHistory() {
+        taskManager.getTask(1);
+        taskManager.getEpic(2);
+        taskManager.getSubTask(3);
+
+        int historySize = historyManager.getHistory().size();
+
+        taskManager.getTask(1);
+        taskManager.getSubTask(3);
+        taskManager.getEpic(2);
+        taskManager.getTask(1);
+        taskManager.getSubTask(3);
+        taskManager.getEpic(2);
+
+        int newHistorySize = historyManager.getHistory().size();
+
+        assertEquals(historySize, newHistorySize, "Задачи в истории повторяются");
     }
 
     @Test
