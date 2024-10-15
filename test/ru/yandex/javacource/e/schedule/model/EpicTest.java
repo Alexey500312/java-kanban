@@ -16,7 +16,7 @@ class EpicTest {
         //Подготовленный эпик
         epic = new Epic("Эпик 1", "Описание 1");
         epic.setId(1);
-        SubTask subTask = new SubTask("Подзадача 1","Описание 1", TaskStatus.NEW);
+        SubTask subTask = new SubTask("Подзадача 1", "Описание 1", TaskStatus.NEW);
         subTask.setId(2);
         subTask.setEpicId(epic.getId());
         epic.addSubTask(subTask);
@@ -24,7 +24,7 @@ class EpicTest {
         //Копия эпика
         epicCopy = new Epic("Эпик 1", "Описание 1");
         epicCopy.setId(1);
-        SubTask subTaskCopy = new SubTask("Подзадача 1","Описание 1", TaskStatus.NEW);
+        SubTask subTaskCopy = new SubTask("Подзадача 1", "Описание 1", TaskStatus.NEW);
         subTaskCopy.setId(2);
         subTaskCopy.setEpicId(epicCopy.getId());
         epicCopy.addSubTask(subTaskCopy);
@@ -98,7 +98,7 @@ class EpicTest {
     public void shouldRemoveSubTask() {
         assertEquals(epic.getSubTasks().size(), 1);
 
-        epic.removeSubTask(  epic.getSubTasks().get(0));
+        epic.removeSubTask(epic.getSubTasks().get(0));
 
         assertEquals(epic.getSubTasks().size(), 0, "Количество подзадач не уменьшилось");
     }

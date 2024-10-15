@@ -3,14 +3,16 @@ package ru.yandex.javacource.e.schedule.service;
 import ru.yandex.javacource.e.schedule.model.Task;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private static final int HISTORY_SIZE = 10;
-    private final List<Task> history;
+    private final HashMap<Integer, Node> history;
+    private Node first;
+    private Node last;
 
     public InMemoryHistoryManager() {
-        history = new ArrayList<>(HISTORY_SIZE);
+        history = new HashMap<>();
     }
 
     @Override
@@ -18,16 +20,73 @@ public class InMemoryHistoryManager implements HistoryManager {
         if (task == null) {
             return;
         }
+        remove(task.getId());
+        Node node = linkLast(task);
+        history.put(task.getId(), node);
+    }
 
-        if (history.size() == HISTORY_SIZE) {
-            history.remove(0);
+    @Override
+    public void remove(int id) {
+        final Node node = history.remove(id);
+        if (node == null) {
+            return;
         }
-
-        history.add(task);
+        removeNode(node);
     }
 
     @Override
     public List<Task> getHistory() {
-        return history;
+        List<Task> historyAll = new ArrayList<>();
+
+        for (Node node = first; node != null; node = node.next) {
+            historyAll.add(node.task);
+        }
+
+        return historyAll;
+    }
+
+    private Node linkLast(Task task) {
+        final Node last = this.last;
+        final Node newNode = new Node(task, last, null);
+        this.last = newNode;
+        if (last == null) {
+            this.first = newNode;
+        } else {
+            last.next = newNode;
+        }
+
+        return newNode;
+    }
+
+    private void removeNode(Node node) {
+        final Task task = node.task;
+        final Node next = node.next;
+        final Node prev = node.prev;
+
+        if (prev == null) {
+            first = next;
+        } else {
+            prev.next = next;
+            node.prev = null;
+        }
+
+        if (next == null) {
+            last = prev;
+        } else {
+            next.prev = prev;
+            node.next = null;
+        }
+    }
+
+    private static class Node {
+        Task task;
+        Node prev;
+        Node next;
+
+        public Node(Task task, Node prev, Node next) {
+            this.task = task;
+            this.prev = prev;
+            this.next = next;
+        }
     }
 }
