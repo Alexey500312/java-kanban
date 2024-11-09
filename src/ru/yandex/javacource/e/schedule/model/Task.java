@@ -50,6 +50,10 @@ public class Task {
         this.status = status;
     }
 
+    public Integer getEpicId() {
+        return null;
+    }
+
     @Override
     public String toString() {
         return this.getClass().getSimpleName()

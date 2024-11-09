@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="18faee15-1013-4149-82aa-843011b18c2d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/lib.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ru/yandex/javacource/e/schedule/model/TaskType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ru/yandex/javacource/e/schedule/service/FileBackedTaskManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ru/yandex/javacource/e/schedule/service/ManagerSaveException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tasks.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/ru/yandex/javacource/e/schedule/service/FileBackedTaskManagerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/java-kanban.iml" beforeDir="false" afterPath="$PROJECT_DIR$/java-kanban.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ru/yandex/javacource/e/schedule/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ru/yandex/javacource/e/schedule/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ru/yandex/javacource/e/schedule/model/SubTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ru/yandex/javacource/e/schedule/model/SubTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ru/yandex/javacource/e/schedule/model/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ru/yandex/javacource/e/schedule/model/Task.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ru/yandex/javacource/e/schedule/service/InMemoryTaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ru/yandex/javacource/e/schedule/service/InMemoryTaskManager.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2oYmsu1chK6s5bJ3HPt0pFADhhR" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "JUnit.FileBackedTaskManagerTest.executor": "Debug",
+    "JUnit.FileBackedTaskManagerTest.shouldLoadFromEmptyFile.executor": "Run",
+    "JUnit.FileBackedTaskManagerTest.shouldSaveEmptyFile.executor": "Debug",
+    "JUnit.FileBackedTaskManagerTest.shouldSaveWithoutTasks.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "sprint__7-solution-in-file-manager",
+    "kotlin-language-version-configured": "true",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Projects\Java\java-kanban" />
+      <recent name="D:\Projects\Java\java-kanban\src\ru\yandex\javacource\e\schedule\service" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.FileBackedTaskManagerTest.shouldLoadFromFile">
+    <configuration name="FileBackedTaskManagerTest.shouldLoadFromEmptyFile" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="java-kanban" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ru.yandex.javacource.e.schedule.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ru.yandex.javacource.e.schedule.service" />
+      <option name="MAIN_CLASS_NAME" value="ru.yandex.javacource.e.schedule.service.FileBackedTaskManagerTest" />
+      <option name="METHOD_NAME" value="shouldLoadFromEmptyFile" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FileBackedTaskManagerTest.shouldLoadFromFile" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="java-kanban" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ru.yandex.javacource.e.schedule.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ru.yandex.javacource.e.schedule.service" />
+      <option name="MAIN_CLASS_NAME" value="ru.yandex.javacource.e.schedule.service.FileBackedTaskManagerTest" />
+      <option name="METHOD_NAME" value="shouldLoadFromFile" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FileBackedTaskManagerTest.shouldSaveEmptyFile" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="java-kanban" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ru.yandex.javacource.e.schedule.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ru.yandex.javacource.e.schedule.service" />
+      <option name="MAIN_CLASS_NAME" value="ru.yandex.javacource.e.schedule.service.FileBackedTaskManagerTest" />
+      <option name="METHOD_NAME" value="shouldSaveEmptyFile" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FileBackedTaskManagerTest.shouldSaveTasks" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="java-kanban" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ru.yandex.javacource.e.schedule.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ru.yandex.javacource.e.schedule.service" />
+      <option name="MAIN_CLASS_NAME" value="ru.yandex.javacource.e.schedule.service.FileBackedTaskManagerTest" />
+      <option name="METHOD_NAME" value="shouldSaveTasks" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FileBackedTaskManagerTest.shouldSaveWithoutTasks" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="java-kanban" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ru.yandex.javacource.e.schedule.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ru.yandex.javacource.e.schedule.service" />
+      <option name="MAIN_CLASS_NAME" value="ru.yandex.javacource.e.schedule.service.FileBackedTaskManagerTest" />
+      <option name="METHOD_NAME" value="shouldSaveWithoutTasks" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.FileBackedTaskManagerTest.shouldLoadFromFile" />
+        <item itemvalue="JUnit.FileBackedTaskManagerTest.shouldSaveTasks" />
+        <item itemvalue="JUnit.FileBackedTaskManagerTest.shouldSaveWithoutTasks" />
+        <item itemvalue="JUnit.FileBackedTaskManagerTest.shouldSaveEmptyFile" />
+        <item itemvalue="JUnit.FileBackedTaskManagerTest.shouldLoadFromEmptyFile" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="18faee15-1013-4149-82aa-843011b18c2d" name="Changes" comment="" />
+      <created>1731055094746</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1731055094746</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/ru/yandex/javacource/e/schedule/Main.java</url>
+          <line>16</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/test/ru/yandex/javacource/e/schedule/service/FileBackedTaskManagerTest.java</url>
+          <line>50</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
