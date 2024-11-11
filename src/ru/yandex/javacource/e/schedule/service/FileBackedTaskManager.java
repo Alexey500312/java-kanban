@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
+    private static final String HEADER = "id,type,name,status,description,epic";
     private Path path;
 
     public FileBackedTaskManager(Path path) {
@@ -35,14 +36,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 if (task == null) {
                     continue;
                 }
-                switch (task.getClass().getSimpleName()) {
-                    case "Task":
+                switch (task.getType()) {
+                    case TASK:
                         manager.tasks.put(task.getId(), task);
                         break;
-                    case "Epic":
+                    case EPIC:
                         manager.epics.put(task.getId(), (Epic) task);
                         break;
-                    case "SubTask":
+                    case SUBTASK:
                         manager.subTasks.put(task.getId(), (SubTask) task);
                         break;
                 }
@@ -64,15 +65,19 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public void save() {
         try (BufferedWriter bufferedWriter = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
-            bufferedWriter.write("id,type,name,status,description,epic\n");
+            bufferedWriter.write(HEADER);
+            bufferedWriter.newLine();
             for (Task task : getAllTasks()) {
-                bufferedWriter.write(toString(task) + "\n");
+                bufferedWriter.write(toString(task));
+                bufferedWriter.newLine();
             }
             for (Epic epic : getAllEpics()) {
-                bufferedWriter.write(toString(epic) + "\n");
+                bufferedWriter.write(toString(epic));
+                bufferedWriter.newLine();
             }
             for (SubTask subTask : getAllSubTasks()) {
-                bufferedWriter.write(toString(subTask) + "\n");
+                bufferedWriter.write(toString(subTask));
+                bufferedWriter.newLine();
             }
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка записи в файл:\n" + e.getMessage());
@@ -80,11 +85,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public String toString(Task task) {
-        TaskType taskType = TaskType.getTaskType(task);
-        String taskTypeName = taskType == null ? "" : taskType.name();
         return task.getId()
                 + ","
-                + taskTypeName
+                + task.getType()
                 + ","
                 + task.getStatus().name()
                 + ","
@@ -92,7 +95,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 + ","
                 + task.getDescription()
                 + ","
-                + (task.getEpicId() == null ? "" : task.getEpicId().toString());
+                + (task.getType().equals(TaskType.SUBTASK) ? ((SubTask) task).getEpicId() : "");
     }
 
     public Task fromString(String value) {
