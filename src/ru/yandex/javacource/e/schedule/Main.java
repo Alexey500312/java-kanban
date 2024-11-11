@@ -6,6 +6,9 @@ import ru.yandex.javacource.e.schedule.model.Task;
 import ru.yandex.javacource.e.schedule.model.TaskStatus;
 import ru.yandex.javacource.e.schedule.service.*;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -49,7 +52,49 @@ public class Main {
         System.out.println(manager.getAllTasks());
         System.out.println(manager.getAllEpics());
         System.out.println(manager.getAllSubTasks());
-
         System.out.println(manager.getHistory());
+
+        System.out.println("\n----------------------------------------------\n");
+
+        Path path = Paths.get("tasks.csv");
+        TaskManager fileManager = new FileBackedTaskManager(path);
+
+        task = new Task("Замена лампочки", "Поменять испорченную лампочку в люстре", TaskStatus.NEW);
+        fileManager.createTask(task);
+        task = new Task("Помыть посуду", "Помыть посуду", TaskStatus.NEW);
+        fileManager.createTask(task);
+
+        epic = new Epic("Поход за покупками", "Купить все необходимое по списку");
+        fileManager.createEpic(epic);
+        subTask = new SubTask("Составить список", "Составить список покупок", TaskStatus.NEW, epic);
+        fileManager.addNewSubTask(subTask);
+        subTask = new SubTask("Сходить в магазин", "Сходить в магазин за покупками", TaskStatus.NEW, epic);
+        fileManager.addNewSubTask(subTask);
+
+        epic = new Epic("Собрать мебель", "Собрать мебель");
+        fileManager.createEpic(epic);
+        subTask = new SubTask("Прочитать инструкцию", "Прочитать инструкцию по сборке", TaskStatus.NEW, epic);
+        fileManager.addNewSubTask(subTask);
+
+        System.out.println(fileManager.getAllTasks());
+        System.out.println(fileManager.getAllEpics());
+        System.out.println(fileManager.getAllSubTasks());
+
+        task.setStatus(TaskStatus.IN_PROGRESS);
+        fileManager.updateTask(task);
+        System.out.println(fileManager.getTask(task.getId()));
+
+        subTask.setStatus(TaskStatus.DONE);
+        fileManager.updateSubTask(subTask);
+        System.out.println(fileManager.getSubTask(subTask.getId()));
+        System.out.println(fileManager.getEpic(epic.getId()));
+
+        fileManager.removeTask(task.getId());
+        fileManager.removeEpic(epic.getId());
+
+        System.out.println(fileManager.getAllTasks());
+        System.out.println(fileManager.getAllEpics());
+        System.out.println(fileManager.getAllSubTasks());
+        System.out.println(fileManager.getHistory());
     }
 }
