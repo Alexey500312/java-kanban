@@ -27,7 +27,7 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
     private Path emptyPath;
 
     @Override
-    public FileBackedTaskManager createTaskManager () {
+    public FileBackedTaskManager createTaskManager() {
         try {
             path = Files.createTempFile("temp", ".csv");
             emptyPath = Files.createTempFile("tempEmpty", ".csv");
