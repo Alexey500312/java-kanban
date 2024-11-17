@@ -151,13 +151,7 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
                 () -> {
                     Path noFile = Paths.get("X:\\NoFile.csv");
                     FileBackedTaskManager manager = new FileBackedTaskManager(historyManager, noFile);
-                    manager.createTask(
-                            new Task(
-                                    "TaskTest",
-                                    "test",
-                                    Duration.ofMinutes(60),
-                                    LocalDateTime.parse("01.01.2025 15:00:00", Task.FORMATTER),
-                                    TaskStatus.NEW));
+                    manager.save();
                 },
                 "Ошибка записи, файл не существует!");
     }
