@@ -141,7 +141,7 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
         assertThrows(
                 ManagerSaveException.class,
                 () -> {
-                    Path noFile = Paths.get("X:\\NoFile.csv");
+                    Path noFile = Paths.get("/NoDirectory/NoFile.csv");
                     FileBackedTaskManager.loadFromFile(historyManager, noFile);
                 },
                 "Ошибка чтения, файл не существует!");
@@ -149,7 +149,7 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
         assertThrows(
                 ManagerSaveException.class,
                 () -> {
-                    Path noFile = Paths.get("X:\\NoFile.csv");
+                    Path noFile = Paths.get("/NoDirectory/NoFile.csv");
                     FileBackedTaskManager manager = new FileBackedTaskManager(historyManager, noFile);
                     manager.save();
                 },
