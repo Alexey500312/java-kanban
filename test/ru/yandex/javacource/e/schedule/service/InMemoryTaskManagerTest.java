@@ -1,10 +1,6 @@
 package ru.yandex.javacource.e.schedule.service;
 
 import org.junit.jupiter.api.DisplayName;
-import ru.yandex.javacource.e.schedule.model.Task;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @DisplayName("Менеджер задач")
 class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
