@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private static final String HEADER = "id,type,name,status,description,epic,duration,startTime";
-    final private Path path;
+    private final Path path;
 
     public FileBackedTaskManager(HistoryManager historyManager, Path path) {
         super(historyManager);
