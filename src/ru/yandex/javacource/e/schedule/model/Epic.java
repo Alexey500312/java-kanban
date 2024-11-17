@@ -1,14 +1,19 @@
 package ru.yandex.javacource.e.schedule.model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Epic extends Task {
     private List<Integer> subTasks;
+    private LocalDateTime endTime;
 
     public Epic(String name, String description) {
         super(name, description);
         setStatus(TaskStatus.NEW);
+        setDuration(null);
+        setStartTime(null);
         subTasks = new ArrayList<>();
     }
 
@@ -18,6 +23,15 @@ public class Epic extends Task {
 
     public void setSubTasks(List<Integer> subTasks) {
         this.subTasks = subTasks;
+    }
+
+    @Override
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
     public boolean addSubTask(SubTask subTask) {
@@ -53,7 +67,9 @@ public class Epic extends Task {
                 + "name='" + this.getName() + '\'' + ", "
                 + "description='" + this.getDescription() + '\'' + ", "
                 + "status='" + this.getStatus().getStatusText() + '\'' + ", "
-                + "countSubTasks = " + this.getSubTasks().size()
+                + "countSubTasks = " + this.getSubTasks().size() + ", "
+                + "duration=" + (this.getDuration() != null ? this.getDuration().toMinutes() : "") + ", "
+                + "startTime='" + (this.getStartTime() != null ? this.getStartTime().format(FORMATTER) : "") + '\''
                 + "}";
     }
 }
