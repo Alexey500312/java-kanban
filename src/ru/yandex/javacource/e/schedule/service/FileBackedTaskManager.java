@@ -25,7 +25,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         this(Managers.getDefaultHistory(), path);
     }
 
-    public static FileBackedTaskManager loadFromFile(HistoryManager historyManager, Path path) {
+    public static FileBackedTaskManager loadFromFile(HistoryManager historyManager, Path path) throws ManagerSaveException {
         if (path == null) {
             return null;
         }
@@ -74,12 +74,12 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return manager;
     }
 
-    public static FileBackedTaskManager loadFromFile(Path path) {
+    public static FileBackedTaskManager loadFromFile(Path path) throws ManagerSaveException {
         HistoryManager historyManager = Managers.getDefaultHistory();
         return loadFromFile(historyManager, path);
     }
 
-    public void save() {
+    public void save() throws ManagerSaveException {
         try (BufferedWriter bufferedWriter = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
             bufferedWriter.write(HEADER);
             bufferedWriter.newLine();
@@ -152,78 +152,78 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public Task createTask(Task task) {
+    public Task createTask(Task task) throws ManagerSaveException {
         Task newTask = super.createTask(task);
         save();
         return newTask;
     }
 
     @Override
-    public void removeAllTasks() {
+    public void removeAllTasks() throws ManagerSaveException {
         super.removeAllTasks();
         save();
     }
 
     @Override
-    public void removeTask(Integer taskId) {
+    public void removeTask(Integer taskId) throws ManagerSaveException {
         super.removeTask(taskId);
         save();
     }
 
     @Override
-    public Task updateTask(Task task) {
+    public Task updateTask(Task task) throws ManagerSaveException {
         Task updateTask = super.updateTask(task);
         save();
         return updateTask;
     }
 
     @Override
-    public Epic createEpic(Epic epic) {
+    public Epic createEpic(Epic epic) throws ManagerSaveException {
         Epic newEpic = super.createEpic(epic);
         save();
         return newEpic;
     }
 
     @Override
-    public void removeAllEpics() {
+    public void removeAllEpics() throws ManagerSaveException {
         super.removeAllEpics();
         save();
     }
 
     @Override
-    public void removeEpic(Integer epicId) {
+    public void removeEpic(Integer epicId) throws ManagerSaveException {
         super.removeEpic(epicId);
         save();
     }
 
     @Override
-    public Epic updateEpic(Epic epic) {
+    public Epic updateEpic(Epic epic) throws ManagerSaveException {
         Epic updateEpic = super.updateEpic(epic);
         save();
         return updateEpic;
     }
 
     @Override
-    public SubTask addNewSubTask(SubTask subTask) {
+    public SubTask addNewSubTask(SubTask subTask) throws ManagerSaveException {
         SubTask newSubTask = super.addNewSubTask(subTask);
         save();
         return newSubTask;
     }
 
     @Override
-    public void removeAllSubTasks() {
+    public void removeAllSubTasks() throws ManagerSaveException {
         super.removeAllSubTasks();
         save();
     }
 
     @Override
-    public void removeSubTask(Integer subTaskId) {
+    public void removeSubTask(Integer subTaskId) throws ManagerSaveException {
         super.removeSubTask(subTaskId);
         save();
     }
 
     @Override
-    public SubTask updateSubTask(SubTask subTask) {
+    public SubTask updateSubTask(SubTask subTask) throws ManagerSaveException {
         SubTask updateSubTask = super.updateSubTask(subTask);
         save();
         return updateSubTask;
