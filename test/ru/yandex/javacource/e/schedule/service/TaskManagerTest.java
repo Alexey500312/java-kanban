@@ -3,6 +3,8 @@ package ru.yandex.javacource.e.schedule.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.yandex.javacource.e.schedule.exception.NullTaskException;
+import ru.yandex.javacource.e.schedule.exception.TaskValidationException;
 import ru.yandex.javacource.e.schedule.model.Epic;
 import ru.yandex.javacource.e.schedule.model.SubTask;
 import ru.yandex.javacource.e.schedule.model.Task;
@@ -402,15 +404,31 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
+    @DisplayName("Добавление пустой задачи")
+    public void shouldCreateNullTask() {
+        Task task = null;
+        assertThrows(
+                NullTaskException.class,
+                () -> {
+                    taskManager.createTask(task);
+                },
+                "Задача добавлена");
+    }
+
+    @Test
     @DisplayName("Пересечение интервалов")
     public void shouldIntersectionOfIntervals() {
         Task task = new Task(
                 "Задача 1",
                 "Описание задачи 1",
                 Duration.ofMinutes(10),
-                LocalDateTime.parse("01.01.2025 09:10:01", Task.FORMATTER),
+                LocalDateTime.parse("01.01.2025 09:10:00", Task.FORMATTER),
                 TaskStatus.NEW);
-        assertEquals(taskManager.checkTaskTime(task), true, "Задача пересекается про времени выполнения");
+        assertThrows(
+                TaskValidationException.class, () -> {
+                    taskManager.createTask(task);
+                },
+                "Задача не пересекается про времени выполнения");
     }
 
     protected class EmptyHistoryManager implements HistoryManager {

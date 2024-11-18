@@ -45,8 +45,6 @@ public interface TaskManager {
 
     SubTask updateSubTask(SubTask subTask);
 
-    boolean checkTaskTime(Task task);
-
     List<Task> getHistory();
 
     List<Task> getPrioritizedTasks();

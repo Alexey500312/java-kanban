@@ -1,6 +1,8 @@
 package ru.yandex.javacource.e.schedule.service;
 
 import ru.yandex.javacource.e.schedule.exception.ManagerSaveException;
+import ru.yandex.javacource.e.schedule.exception.NullTaskException;
+import ru.yandex.javacource.e.schedule.exception.TaskValidationException;
 import ru.yandex.javacource.e.schedule.model.*;
 
 import java.io.BufferedReader;
@@ -152,7 +154,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public Task createTask(Task task) throws ManagerSaveException {
+    public Task createTask(Task task) throws NullTaskException, TaskValidationException, ManagerSaveException {
         Task newTask = super.createTask(task);
         save();
         return newTask;
@@ -165,20 +167,20 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void removeTask(Integer taskId) throws ManagerSaveException {
+    public void removeTask(Integer taskId) throws NullTaskException, ManagerSaveException {
         super.removeTask(taskId);
         save();
     }
 
     @Override
-    public Task updateTask(Task task) throws ManagerSaveException {
+    public Task updateTask(Task task) throws NullTaskException, TaskValidationException, ManagerSaveException {
         Task updateTask = super.updateTask(task);
         save();
         return updateTask;
     }
 
     @Override
-    public Epic createEpic(Epic epic) throws ManagerSaveException {
+    public Epic createEpic(Epic epic) throws NullTaskException, ManagerSaveException {
         Epic newEpic = super.createEpic(epic);
         save();
         return newEpic;
@@ -191,20 +193,20 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void removeEpic(Integer epicId) throws ManagerSaveException {
+    public void removeEpic(Integer epicId) throws NullTaskException, ManagerSaveException {
         super.removeEpic(epicId);
         save();
     }
 
     @Override
-    public Epic updateEpic(Epic epic) throws ManagerSaveException {
+    public Epic updateEpic(Epic epic) throws NullTaskException, ManagerSaveException {
         Epic updateEpic = super.updateEpic(epic);
         save();
         return updateEpic;
     }
 
     @Override
-    public SubTask addNewSubTask(SubTask subTask) throws ManagerSaveException {
+    public SubTask addNewSubTask(SubTask subTask) throws NullTaskException, TaskValidationException, ManagerSaveException {
         SubTask newSubTask = super.addNewSubTask(subTask);
         save();
         return newSubTask;
@@ -217,13 +219,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void removeSubTask(Integer subTaskId) throws ManagerSaveException {
+    public void removeSubTask(Integer subTaskId) throws NullTaskException, ManagerSaveException {
         super.removeSubTask(subTaskId);
         save();
     }
 
     @Override
-    public SubTask updateSubTask(SubTask subTask) throws ManagerSaveException {
+    public SubTask updateSubTask(SubTask subTask) throws NullTaskException, TaskValidationException, ManagerSaveException {
         SubTask updateSubTask = super.updateSubTask(subTask);
         save();
         return updateSubTask;

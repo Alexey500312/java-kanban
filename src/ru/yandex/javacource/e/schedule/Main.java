@@ -26,13 +26,6 @@ public class Main {
                 TaskStatus.NEW);
         manager.createTask(task);
         task = new Task(
-                "Пересечение",
-                "Проверка на пересечение",
-                Duration.ofMinutes(120),
-                LocalDateTime.parse("10.11.2024 12:30:00", Task.FORMATTER),
-                TaskStatus.NEW);
-        manager.createTask(task);
-        task = new Task(
                 "Помыть посуду",
                 "Помыть посуду",
                 Duration.ofMinutes(60),
