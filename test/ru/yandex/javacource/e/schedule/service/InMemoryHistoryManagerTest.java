@@ -8,6 +8,9 @@ import ru.yandex.javacource.e.schedule.model.SubTask;
 import ru.yandex.javacource.e.schedule.model.Task;
 import ru.yandex.javacource.e.schedule.model.TaskStatus;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Менеджер истории")
@@ -19,11 +22,22 @@ class InMemoryHistoryManagerTest {
     public void init() {
         historyManager = Managers.getDefaultHistory();
         taskManager = new InMemoryTaskManager(historyManager);
-        Task task = new Task("Задача 1", "Описание задачи 1", TaskStatus.NEW);
+        Task task = new Task(
+                "Задача 1",
+                "Описание задачи 1",
+                Duration.ofMinutes(10),
+                LocalDateTime.parse("01.01.2025 09:00:00", Task.FORMATTER),
+                TaskStatus.NEW);
         taskManager.createTask(task);
         Epic epic = new Epic("Эпик 1", "Описание эпика 1");
         taskManager.createEpic(epic);
-        SubTask subTask = new SubTask("Подзадача 1", "Описание подзадачи 1", TaskStatus.NEW, epic);
+        SubTask subTask = new SubTask(
+                "Подзадача 1",
+                "Описание подзадачи 1",
+                Duration.ofMinutes(10),
+                LocalDateTime.parse("01.01.2025 10:00:00", Task.FORMATTER),
+                TaskStatus.NEW,
+                epic);
         taskManager.addNewSubTask(subTask);
     }
 

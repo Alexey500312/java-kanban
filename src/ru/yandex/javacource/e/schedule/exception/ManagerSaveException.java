@@ -1,4 +1,4 @@
-package ru.yandex.javacource.e.schedule.service;
+package ru.yandex.javacource.e.schedule.exception;
 
 public class ManagerSaveException extends RuntimeException {
     public ManagerSaveException() {
