@@ -12,6 +12,7 @@ import ru.yandex.javacource.e.schedule.model.Task;
 import ru.yandex.javacource.e.schedule.model.Items;
 import ru.yandex.javacource.e.schedule.server.adapter.DurationAdapter;
 import ru.yandex.javacource.e.schedule.server.adapter.LocalDateTimeAdapter;
+import ru.yandex.javacource.e.schedule.service.Managers;
 import ru.yandex.javacource.e.schedule.service.TaskManager;
 
 import java.io.IOException;
@@ -34,11 +35,7 @@ public abstract class BaseHttpHandler<T extends Task> implements HttpHandler {
 
     public BaseHttpHandler(TaskManager manager) {
         this.manager = manager;
-        this.gson = new GsonBuilder()
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                .registerTypeAdapter(Duration.class, new DurationAdapter())
-                .setPrettyPrinting()
-                .create();
+        this.gson = Managers.getDefaultGson();
     }
 
     @Override
