@@ -1,7 +1,6 @@
 package ru.yandex.javacource.e.schedule.server.handler;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import ru.yandex.javacource.e.schedule.exception.EndpointException;
@@ -10,14 +9,10 @@ import ru.yandex.javacource.e.schedule.exception.RequestException;
 import ru.yandex.javacource.e.schedule.exception.TaskValidationException;
 import ru.yandex.javacource.e.schedule.model.Task;
 import ru.yandex.javacource.e.schedule.model.Items;
-import ru.yandex.javacource.e.schedule.server.adapter.DurationAdapter;
-import ru.yandex.javacource.e.schedule.server.adapter.LocalDateTimeAdapter;
 import ru.yandex.javacource.e.schedule.service.Managers;
 import ru.yandex.javacource.e.schedule.service.TaskManager;
 
 import java.io.IOException;
-import java.time.Duration;
-import java.time.LocalDateTime;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
