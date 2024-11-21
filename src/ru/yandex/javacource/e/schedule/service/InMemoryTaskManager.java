@@ -65,6 +65,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task getTask(Integer taskId) {
         Task task = tasks.get(taskId);
+        if (task == null) {
+            throw new NullTaskException("Задача не найдена");
+        }
         historyManager.add(task);
         return task;
     }
@@ -127,6 +130,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Epic getEpic(Integer epicId) {
         Epic epic = epics.get(epicId);
+        if (epic == null) {
+            throw new NullTaskException("Эпик не найден");
+        }
         historyManager.add(epic);
         return epic;
     }
@@ -203,6 +209,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public SubTask getSubTask(Integer subTaskId) {
         SubTask subTask = subTasks.get(subTaskId);
+        if (subTask == null) {
+            throw new NullTaskException("Подзадача не найдена");
+        }
         historyManager.add(subTask);
         return subTask;
     }
