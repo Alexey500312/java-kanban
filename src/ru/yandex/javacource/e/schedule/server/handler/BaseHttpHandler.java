@@ -47,8 +47,9 @@ public abstract class BaseHttpHandler<T extends Task> implements HttpHandler {
 
     protected void sendResponse(HttpExchange exchange, int code, String text) throws IOException {
         byte[] resp = text.getBytes(UTF_8);
+        int respLength = code != 204 ? resp.length : -1;
         exchange.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
-        exchange.sendResponseHeaders(code, 0);
+        exchange.sendResponseHeaders(code, respLength);
         exchange.getResponseBody().write(resp);
     }
 
