@@ -4,7 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import ru.yandex.javacource.e.schedule.exception.EndpointException;
 import ru.yandex.javacource.e.schedule.model.Task;
-import ru.yandex.javacource.e.schedule.server.Items;
+import ru.yandex.javacource.e.schedule.model.Items;
 import ru.yandex.javacource.e.schedule.service.TaskManager;
 
 import java.io.IOException;

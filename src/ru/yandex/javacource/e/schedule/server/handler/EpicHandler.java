@@ -5,9 +5,8 @@ import com.sun.net.httpserver.HttpHandler;
 import ru.yandex.javacource.e.schedule.exception.EndpointException;
 import ru.yandex.javacource.e.schedule.exception.RequestException;
 import ru.yandex.javacource.e.schedule.model.Epic;
-import ru.yandex.javacource.e.schedule.model.Task;
-import ru.yandex.javacource.e.schedule.server.Item;
-import ru.yandex.javacource.e.schedule.server.Items;
+import ru.yandex.javacource.e.schedule.model.Item;
+import ru.yandex.javacource.e.schedule.model.Items;
 import ru.yandex.javacource.e.schedule.service.TaskManager;
 
 import java.io.IOException;
@@ -86,7 +85,7 @@ public class EpicHandler extends BaseHttpHandler<Epic> implements HttpHandler {
         } catch (Exception e) {
             throw new RequestException("Ошибка чтения тела запроса");
         }
-        if (item.getName() == null || item.getDescription() ==null) {
+        if (item.getName() == null || item.getDescription() == null) {
             throw new RequestException("Ошибка в теле запроса");
         }
         Epic epic = new Epic(item.getName(), item.getDescription());

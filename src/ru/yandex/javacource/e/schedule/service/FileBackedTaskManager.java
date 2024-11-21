@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private static final String HEADER = "id,type,name,status,description,epic,duration,startTime";
@@ -121,7 +122,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public Task fromString(String value) {
-        String[] taskData = value.split(",");
+        String[] taskData = value.split(",", -1);
         TaskType taskType = TaskType.valueOf(taskData[1]);
         switch (taskType) {
             case TASK:
@@ -137,8 +138,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 Epic epic = new Epic(taskData[3], taskData[4]);
                 epic.setId(Integer.valueOf(taskData[0]));
                 epic.setStatus(TaskStatus.valueOf(taskData[2]));
-                epic.setDuration(Duration.ofMinutes(Integer.parseInt(taskData[6])));
-                epic.setStartTime(LocalDateTime.parse(taskData[7], Task.FORMATTER));
+                try {
+                    epic.setDuration(Duration.ofMinutes(Integer.parseInt(taskData[6])));
+                } catch (NumberFormatException ignored) {
+                }
+                try {
+                    epic.setStartTime(LocalDateTime.parse(taskData[7], Task.FORMATTER));
+                } catch (DateTimeParseException ignored) {
+                }
                 return epic;
             case SUBTASK:
                 SubTask subTask = new SubTask(

@@ -1,6 +1,4 @@
-package ru.yandex.javacource.e.schedule.server;
-
-import ru.yandex.javacource.e.schedule.model.Task;
+package ru.yandex.javacource.e.schedule.model;
 
 import java.util.List;
 

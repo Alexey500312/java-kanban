@@ -1,6 +1,4 @@
-package ru.yandex.javacource.e.schedule.server;
-
-import ru.yandex.javacource.e.schedule.model.TaskStatus;
+package ru.yandex.javacource.e.schedule.model;
 
 import java.time.Duration;
 import java.time.LocalDateTime;

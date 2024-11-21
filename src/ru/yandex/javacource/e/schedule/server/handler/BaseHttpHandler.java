@@ -9,7 +9,7 @@ import ru.yandex.javacource.e.schedule.exception.NullTaskException;
 import ru.yandex.javacource.e.schedule.exception.RequestException;
 import ru.yandex.javacource.e.schedule.exception.TaskValidationException;
 import ru.yandex.javacource.e.schedule.model.Task;
-import ru.yandex.javacource.e.schedule.server.Items;
+import ru.yandex.javacource.e.schedule.model.Items;
 import ru.yandex.javacource.e.schedule.server.adapter.DurationAdapter;
 import ru.yandex.javacource.e.schedule.server.adapter.LocalDateTimeAdapter;
 import ru.yandex.javacource.e.schedule.service.TaskManager;
