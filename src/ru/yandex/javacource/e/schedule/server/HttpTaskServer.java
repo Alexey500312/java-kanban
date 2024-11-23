@@ -2,6 +2,7 @@ package ru.yandex.javacource.e.schedule.server;
 
 import com.sun.net.httpserver.HttpServer;
 import ru.yandex.javacource.e.schedule.exception.HttpCreateException;
+import ru.yandex.javacource.e.schedule.exception.ManagerSaveException;
 import ru.yandex.javacource.e.schedule.server.handler.*;
 import ru.yandex.javacource.e.schedule.service.FileBackedTaskManager;
 import ru.yandex.javacource.e.schedule.service.Managers;
@@ -9,6 +10,7 @@ import ru.yandex.javacource.e.schedule.service.TaskManager;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.Objects;
 
 public class HttpTaskServer {
     public static final String HTTP_ADDRESS = "localhost";
@@ -17,12 +19,12 @@ public class HttpTaskServer {
     private TaskManager manager;
     private HttpServer server;
 
-    public HttpTaskServer() throws HttpCreateException {
+    public HttpTaskServer() throws NullPointerException, ManagerSaveException, HttpCreateException {
         this(FileBackedTaskManager.loadFromFile(Managers.getDefaultFilePath()));
     }
 
-    public HttpTaskServer(TaskManager taskManager) throws HttpCreateException {
-        this.manager = taskManager;
+    public HttpTaskServer(TaskManager taskManager) throws NullPointerException, ManagerSaveException, HttpCreateException {
+        this.manager = Objects.requireNonNull(taskManager, "Не передан менеджер задач");
         try {
             this.server = HttpServer.create(new InetSocketAddress(HTTP_ADDRESS, HTTP_PORT), 0);
             server.createContext("/tasks", new TaskHandler(manager));
@@ -39,7 +41,7 @@ public class HttpTaskServer {
         try {
             HttpTaskServer httpTaskServer = new HttpTaskServer();
             httpTaskServer.start();
-        } catch (HttpCreateException e) {
+        } catch (NullPointerException | ManagerSaveException | HttpCreateException e) {
             System.out.println(e.getMessage());
         }
     }
