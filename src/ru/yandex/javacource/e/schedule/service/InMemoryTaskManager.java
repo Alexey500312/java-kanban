@@ -1,6 +1,6 @@
 package ru.yandex.javacource.e.schedule.service;
 
-import ru.yandex.javacource.e.schedule.exception.NullTaskException;
+import ru.yandex.javacource.e.schedule.exception.TaskNotFoundException;
 import ru.yandex.javacource.e.schedule.exception.TaskValidationException;
 import ru.yandex.javacource.e.schedule.model.Epic;
 import ru.yandex.javacource.e.schedule.model.SubTask;
@@ -21,6 +21,7 @@ public class InMemoryTaskManager implements TaskManager {
 
 
     public InMemoryTaskManager(HistoryManager historyManager) {
+        Objects.requireNonNull(historyManager, "Не передана история");
         sequenceTask = 0;
         tasks = new HashMap<>();
         epics = new HashMap<>();
@@ -38,9 +39,9 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task createTask(Task task) throws NullTaskException, TaskValidationException {
+    public Task createTask(Task task) throws TaskNotFoundException, TaskValidationException {
         if (task == null) {
-            throw new NullTaskException("Задача не передана");
+            throw new TaskNotFoundException("Задача не передана");
         }
         if (!checkTaskTime(task)) {
             throw new TaskValidationException("Задачи пересекаются");
@@ -63,33 +64,33 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task getTask(Integer taskId) {
+    public Task getTask(Integer taskId) throws TaskNotFoundException {
         Task task = tasks.get(taskId);
         if (task == null) {
-            throw new NullTaskException("Задача не найдена");
+            throw new TaskNotFoundException("Задача не найдена");
         }
         historyManager.add(task);
         return task;
     }
 
     @Override
-    public void removeTask(Integer taskId) throws NullTaskException {
+    public void removeTask(Integer taskId) throws TaskNotFoundException {
         Task task = tasks.get(taskId);
         if (task == null) {
-            throw new NullTaskException("Задача не найдена");
+            throw new TaskNotFoundException("Задача не найдена");
         }
         prioritizedTasks.remove(task);
         tasks.remove(taskId);
     }
 
     @Override
-    public Task updateTask(Task task) throws NullTaskException, TaskValidationException {
+    public Task updateTask(Task task) throws TaskNotFoundException, TaskValidationException {
         if (task == null) {
-            throw new NullTaskException("Задача не передана");
+            throw new TaskNotFoundException("Задача не передана");
         }
         Task savedTask = tasks.get(task.getId());
         if (savedTask == null) {
-            throw new NullTaskException("Задача не найдена");
+            throw new TaskNotFoundException("Задача не найдена");
         }
         if (!checkTaskTime(task)) {
             throw new TaskValidationException("Задачи пересекаются");
@@ -101,9 +102,9 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Epic createEpic(Epic epic) throws NullTaskException {
+    public Epic createEpic(Epic epic) throws TaskNotFoundException {
         if (epic == null) {
-            throw new NullTaskException("Эпик не передан");
+            throw new TaskNotFoundException("Эпик не передан");
         }
         epic.setId(generateId());
         epics.put(epic.getId(), epic);
@@ -128,20 +129,20 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Epic getEpic(Integer epicId) {
+    public Epic getEpic(Integer epicId) throws TaskNotFoundException {
         Epic epic = epics.get(epicId);
         if (epic == null) {
-            throw new NullTaskException("Эпик не найден");
+            throw new TaskNotFoundException("Эпик не найден");
         }
         historyManager.add(epic);
         return epic;
     }
 
     @Override
-    public void removeEpic(Integer epicId) throws NullTaskException {
+    public void removeEpic(Integer epicId) throws TaskNotFoundException {
         Epic epic = epics.get(epicId);
         if (epic == null) {
-            throw new NullTaskException("Эпик не найден");
+            throw new TaskNotFoundException("Эпик не найден");
         }
         epic.getSubTasks().forEach(subTaskId -> {
             prioritizedTasks.remove(subTasks.get(subTaskId));
@@ -151,13 +152,13 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Epic updateEpic(Epic epic) throws NullTaskException {
+    public Epic updateEpic(Epic epic) throws TaskNotFoundException {
         if (epic == null) {
-            throw new NullTaskException("Эпик не передан");
+            throw new TaskNotFoundException("Эпик не передан");
         }
         Epic savedEpic = epics.get(epic.getId());
         if (savedEpic == null) {
-            throw new NullTaskException("Эпик не найден");
+            throw new TaskNotFoundException("Эпик не найден");
         }
         epic.setStatus(savedEpic.getStatus());
         epic.setSubTasks(savedEpic.getSubTasks());
@@ -169,13 +170,13 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public SubTask addNewSubTask(SubTask subTask) throws NullTaskException, TaskValidationException {
+    public SubTask addNewSubTask(SubTask subTask) throws TaskNotFoundException, TaskValidationException {
         if (subTask == null) {
-            throw new NullTaskException("Подзадача не передана");
+            throw new TaskNotFoundException("Подзадача не передана");
         }
         Epic epic = epics.get(subTask.getEpicId());
         if (epic == null) {
-            throw new NullTaskException("Эпик переданной подзадачи не найден");
+            throw new TaskNotFoundException("Эпик переданной подзадачи не найден");
         }
         if (!checkTaskTime(subTask)) {
             throw new TaskValidationException("Задачи пересекаются");
@@ -187,7 +188,7 @@ public class InMemoryTaskManager implements TaskManager {
             prioritizedTasks.add(subTask);
             return subTask;
         } else {
-            throw new NullTaskException("Ошибка добавления подзадачи к эпику");
+            throw new TaskNotFoundException("Ошибка добавления подзадачи к эпику");
         }
     }
 
@@ -207,20 +208,20 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public SubTask getSubTask(Integer subTaskId) {
+    public SubTask getSubTask(Integer subTaskId) throws TaskNotFoundException {
         SubTask subTask = subTasks.get(subTaskId);
         if (subTask == null) {
-            throw new NullTaskException("Подзадача не найдена");
+            throw new TaskNotFoundException("Подзадача не найдена");
         }
         historyManager.add(subTask);
         return subTask;
     }
 
     @Override
-    public void removeSubTask(Integer subTaskId) throws NullTaskException {
+    public void removeSubTask(Integer subTaskId) throws TaskNotFoundException {
         SubTask subTask = subTasks.get(subTaskId);
         if (subTask == null) {
-            throw new NullTaskException("Подзадача не найдена");
+            throw new TaskNotFoundException("Подзадача не найдена");
         }
         prioritizedTasks.remove(subTask);
         subTasks.remove(subTask.getId());
@@ -230,17 +231,17 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public SubTask updateSubTask(SubTask subTask) throws NullTaskException, TaskValidationException {
+    public SubTask updateSubTask(SubTask subTask) throws TaskNotFoundException, TaskValidationException {
         if (subTask == null) {
-            throw new NullTaskException("Подзадача не передана");
+            throw new TaskNotFoundException("Подзадача не передана");
         }
         SubTask savedSubTask = subTasks.get(subTask.getId());
         if (savedSubTask == null) {
-            throw new NullTaskException("Подзадача не найдена");
+            throw new TaskNotFoundException("Подзадача не найдена");
         }
         Integer savedSubTaskEpicId = savedSubTask.getEpicId();
         if (savedSubTaskEpicId == null) {
-            throw new NullTaskException("Эпик подзадачи не найден");
+            throw new TaskNotFoundException("Эпик подзадачи не найден");
         }
         if (!checkTaskTime(subTask)) {
             throw new TaskValidationException("Задачи пересекаются");
@@ -263,17 +264,17 @@ public class InMemoryTaskManager implements TaskManager {
         return new ArrayList<>(prioritizedTasks);
     }
 
-    protected void updateEpicData(Epic epic) throws NullTaskException {
+    protected void updateEpicData(Epic epic) throws TaskNotFoundException {
         if (epic == null) {
-            throw new NullTaskException("Эпик не передан");
+            throw new TaskNotFoundException("Эпик не передан");
         }
         updateEpicStatus(epic);
         updateEpicDuration(epic);
     }
 
-    protected void updateEpicStatus(Epic epic) throws NullTaskException {
+    protected void updateEpicStatus(Epic epic) throws TaskNotFoundException {
         if (epic == null) {
-            throw new NullTaskException("Эпик не передан");
+            throw new TaskNotFoundException("Эпик не передан");
         }
         if (epic.getSubTasks().isEmpty()) {
             epic.setStatus(TaskStatus.NEW);
@@ -305,9 +306,9 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    protected void updateEpicDuration(Epic epic) throws NullTaskException {
+    protected void updateEpicDuration(Epic epic) throws TaskNotFoundException {
         if (epic == null) {
-            throw new NullTaskException("Эпик не передан");
+            throw new TaskNotFoundException("Эпик не передан");
         }
         Duration duration = Duration.ZERO;
         LocalDateTime startTime = null;

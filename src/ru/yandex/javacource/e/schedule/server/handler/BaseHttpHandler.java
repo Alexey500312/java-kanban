@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import ru.yandex.javacource.e.schedule.exception.EndpointException;
-import ru.yandex.javacource.e.schedule.exception.NullTaskException;
+import ru.yandex.javacource.e.schedule.exception.TaskNotFoundException;
 import ru.yandex.javacource.e.schedule.exception.RequestException;
 import ru.yandex.javacource.e.schedule.exception.TaskValidationException;
 import ru.yandex.javacource.e.schedule.model.Task;
@@ -60,7 +60,7 @@ public abstract class BaseHttpHandler<T extends Task> implements HttpHandler {
 
     protected void sendResponseError(HttpExchange exchange, Exception e) {
         try {
-            if (e instanceof NullTaskException || e instanceof EndpointException) {
+            if (e instanceof TaskNotFoundException || e instanceof EndpointException) {
                 sendResponse(exchange, HTTP_NOT_FOUND, e.getMessage());
             } else if (e instanceof TaskValidationException) {
                 sendResponse(exchange, HTTP_NOT_ACCEPTABLE, e.getMessage());
@@ -68,6 +68,7 @@ public abstract class BaseHttpHandler<T extends Task> implements HttpHandler {
                 sendResponse(exchange, HTTP_BAD_REQUEST, e.getMessage());
             } else {
                 sendResponse(exchange, HTTP_INTERNAL_SERVER_ERROR, "Ошибка сервера");
+                e.printStackTrace();
             }
         } catch (Exception exception) {
             exception.printStackTrace();
