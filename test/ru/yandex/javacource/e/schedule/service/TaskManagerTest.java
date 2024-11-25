@@ -3,7 +3,7 @@ package ru.yandex.javacource.e.schedule.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.yandex.javacource.e.schedule.exception.NullTaskException;
+import ru.yandex.javacource.e.schedule.exception.TaskNotFoundException;
 import ru.yandex.javacource.e.schedule.exception.TaskValidationException;
 import ru.yandex.javacource.e.schedule.model.Epic;
 import ru.yandex.javacource.e.schedule.model.SubTask;
@@ -408,7 +408,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     public void shouldCreateNullTask() {
         Task task = null;
         assertThrows(
-                NullTaskException.class,
+                TaskNotFoundException.class,
                 () -> {
                     taskManager.createTask(task);
                 },

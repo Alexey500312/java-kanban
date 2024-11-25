@@ -1,7 +1,7 @@
 package ru.yandex.javacource.e.schedule.service;
 
 import ru.yandex.javacource.e.schedule.exception.ManagerSaveException;
-import ru.yandex.javacource.e.schedule.exception.NullTaskException;
+import ru.yandex.javacource.e.schedule.exception.TaskNotFoundException;
 import ru.yandex.javacource.e.schedule.exception.TaskValidationException;
 import ru.yandex.javacource.e.schedule.model.*;
 
@@ -13,24 +13,24 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
+import java.util.Objects;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private static final String HEADER = "id,type,name,status,description,epic,duration,startTime";
     private final Path path;
 
-    public FileBackedTaskManager(HistoryManager historyManager, Path path) {
+    public FileBackedTaskManager(HistoryManager historyManager, Path path) throws NullPointerException {
         super(historyManager);
-        this.path = path;
+        this.path = Objects.requireNonNull(path, "Не передан путь к файлу");
     }
 
-    public FileBackedTaskManager(Path path) {
+    public FileBackedTaskManager(Path path) throws NullPointerException {
         this(Managers.getDefaultHistory(), path);
     }
 
-    public static FileBackedTaskManager loadFromFile(HistoryManager historyManager, Path path) throws ManagerSaveException {
-        if (path == null) {
-            return null;
-        }
+    public static FileBackedTaskManager loadFromFile(HistoryManager historyManager, Path path)
+            throws NullPointerException, ManagerSaveException {
         int sequenceTask = 0;
         FileBackedTaskManager manager = new FileBackedTaskManager(historyManager, path);
         try (BufferedReader bufferedReader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
@@ -76,7 +76,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return manager;
     }
 
-    public static FileBackedTaskManager loadFromFile(Path path) throws ManagerSaveException {
+    public static FileBackedTaskManager loadFromFile(Path path) throws NullPointerException, ManagerSaveException {
         HistoryManager historyManager = Managers.getDefaultHistory();
         return loadFromFile(historyManager, path);
     }
@@ -121,7 +121,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public Task fromString(String value) {
-        String[] taskData = value.split(",");
+        String[] taskData = value.split(",", -1);
         TaskType taskType = TaskType.valueOf(taskData[1]);
         switch (taskType) {
             case TASK:
@@ -137,8 +137,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 Epic epic = new Epic(taskData[3], taskData[4]);
                 epic.setId(Integer.valueOf(taskData[0]));
                 epic.setStatus(TaskStatus.valueOf(taskData[2]));
-                epic.setDuration(Duration.ofMinutes(Integer.parseInt(taskData[6])));
-                epic.setStartTime(LocalDateTime.parse(taskData[7], Task.FORMATTER));
+                try {
+                    epic.setDuration(Duration.ofMinutes(Integer.parseInt(taskData[6])));
+                } catch (NumberFormatException ignored) {
+                }
+                try {
+                    epic.setStartTime(LocalDateTime.parse(taskData[7], Task.FORMATTER));
+                } catch (DateTimeParseException ignored) {
+                }
                 return epic;
             case SUBTASK:
                 SubTask subTask = new SubTask(
@@ -154,7 +160,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public Task createTask(Task task) throws NullTaskException, TaskValidationException, ManagerSaveException {
+    public Task createTask(Task task) throws TaskNotFoundException, TaskValidationException, ManagerSaveException {
         Task newTask = super.createTask(task);
         save();
         return newTask;
@@ -167,20 +173,20 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void removeTask(Integer taskId) throws NullTaskException, ManagerSaveException {
+    public void removeTask(Integer taskId) throws TaskNotFoundException, ManagerSaveException {
         super.removeTask(taskId);
         save();
     }
 
     @Override
-    public Task updateTask(Task task) throws NullTaskException, TaskValidationException, ManagerSaveException {
+    public Task updateTask(Task task) throws TaskNotFoundException, TaskValidationException, ManagerSaveException {
         Task updateTask = super.updateTask(task);
         save();
         return updateTask;
     }
 
     @Override
-    public Epic createEpic(Epic epic) throws NullTaskException, ManagerSaveException {
+    public Epic createEpic(Epic epic) throws TaskNotFoundException, ManagerSaveException {
         Epic newEpic = super.createEpic(epic);
         save();
         return newEpic;
@@ -193,20 +199,20 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void removeEpic(Integer epicId) throws NullTaskException, ManagerSaveException {
+    public void removeEpic(Integer epicId) throws TaskNotFoundException, ManagerSaveException {
         super.removeEpic(epicId);
         save();
     }
 
     @Override
-    public Epic updateEpic(Epic epic) throws NullTaskException, ManagerSaveException {
+    public Epic updateEpic(Epic epic) throws TaskNotFoundException, ManagerSaveException {
         Epic updateEpic = super.updateEpic(epic);
         save();
         return updateEpic;
     }
 
     @Override
-    public SubTask addNewSubTask(SubTask subTask) throws NullTaskException, TaskValidationException, ManagerSaveException {
+    public SubTask addNewSubTask(SubTask subTask) throws TaskNotFoundException, TaskValidationException, ManagerSaveException {
         SubTask newSubTask = super.addNewSubTask(subTask);
         save();
         return newSubTask;
@@ -219,13 +225,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void removeSubTask(Integer subTaskId) throws NullTaskException, ManagerSaveException {
+    public void removeSubTask(Integer subTaskId) throws TaskNotFoundException, ManagerSaveException {
         super.removeSubTask(subTaskId);
         save();
     }
 
     @Override
-    public SubTask updateSubTask(SubTask subTask) throws NullTaskException, TaskValidationException, ManagerSaveException {
+    public SubTask updateSubTask(SubTask subTask) throws TaskNotFoundException, TaskValidationException, ManagerSaveException {
         SubTask updateSubTask = super.updateSubTask(subTask);
         save();
         return updateSubTask;

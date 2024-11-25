@@ -1,23 +1,23 @@
 package ru.yandex.javacource.e.schedule.exception;
 
-public class NullTaskException extends RuntimeException {
-    public NullTaskException() {
+public class EndpointException extends RuntimeException {
+    public EndpointException() {
         super();
     }
 
-    public NullTaskException(String message) {
+    public EndpointException(String message) {
         super(message);
     }
 
-    public NullTaskException(String message, final Throwable cause) {
+    public EndpointException(String message, final Throwable cause) {
         super(message, cause);
     }
 
-    public NullTaskException(Throwable cause) {
+    public EndpointException(Throwable cause) {
         super(cause);
     }
 
-    protected NullTaskException(String message, Throwable cause,
+    protected EndpointException(String message, Throwable cause,
                                 boolean enableSuppression,
                                 boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
